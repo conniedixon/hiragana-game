@@ -16,6 +16,19 @@ class Hiragana extends Component {
     guess: "",
   };
 
+  componentDidMount() {
+    this.getHiragana();
+  }
+
+  getHiragana = () => {
+    let randomHiragana = Math.floor(Math.random() * 5);
+    if (randomHiragana === this.state.currentCard) randomHiragana++;
+    if (randomHiragana > 5) randomHiragana -= 2;
+    if (randomHiragana < 0) randomHiragana += 2;
+    this.setState({ currentCard: randomHiragana });
+    console.log(randomHiragana, "<-- getHiragana");
+  };
+
   handleChange = ({ target: { value } }) => {
     this.setState(() => {
       return {
@@ -27,12 +40,17 @@ class Hiragana extends Component {
   checkAnswer = (event) => {
     event.preventDefault();
     let answers = this.state.cards[this.state.currentCard]["answer"];
-    if (answers.includes(this.state.guess)) console.log("correct");
-    // this.state.cards.currentCard.answer.map((answer) => {
-    //   if (answer === this.state.guess) {
-    //     console.log("correct");
-    //   }
-    // });
+    answers.includes(this.state.guess)
+      ? this.handleCorrect()
+      : this.handleIncorrect();
+  };
+
+  handleCorrect = () => {
+    this.getHiragana();
+  };
+
+  handleIncorrect = () => {
+    console.log("incorrect");
   };
 
   render() {
@@ -40,6 +58,7 @@ class Hiragana extends Component {
       <div>
         <h1>Hiragana Test</h1>
         <h2>Type the correct phonetic sound and press enter.</h2>
+        <p>{this.state.currentCard}</p>
         <form onSubmit={this.checkAnswer}>
           <input
             type='text'
