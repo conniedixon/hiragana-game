@@ -101,7 +101,18 @@ class Hiragana extends Component {
     console.log("incorrect");
   };
 
-  handleSkip = () => {};
+  handleSkip = () => {
+    this.setState((currentState) => {
+      return {
+        skippedCount: currentState.skippedCount++,
+        skipped: [
+          ...currentState.skipped,
+          currentState.cards[currentState.currentCard],
+        ],
+      };
+    });
+    this.getHiragana();
+  };
 
   render() {
     return (
@@ -117,8 +128,11 @@ class Hiragana extends Component {
             value={this.state.guess}
             placeholder='Type your answer here...'></input>
           <button>Submit!</button>
-          <p>Score: {this.state.score}</p>
+          <br />
           <button onClick={this.handleSkip}>Skip</button>
+          <p>Correct: {this.state.score}</p>
+          <p>Incorrect: 0</p>
+          <p>Skipped: {this.state.skippedCount} </p>
         </form>
       </div>
     );
