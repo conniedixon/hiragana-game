@@ -4,13 +4,54 @@ import React, { Component } from "react";
 
 class Hiragana extends Component {
   state = {
-    points: 0,
+    score: 0,
     cards: [
       { hiragana: "あ", answer: ["a", "ah", "aa"] },
       { hiragana: "か", answer: ["ka", "kah", "ca", "cah"] },
       { hiragana: "さ", answer: ["sah", "sa", "sar"] },
       { hiragana: "た", answer: ["ta"] },
       { hiragana: "な", answer: ["na", "nah"] },
+      { hiragana: "は", answer: ["ha", "hah", "haa"] },
+      { hiragana: "ま", answer: ["ma", "mah", "maa"] },
+      { hiragana: "や", answer: ["ya", "yah", "yaa"] },
+      { hiragana: "ら", answer: ["ra"] },
+      { hiragana: "わ", answer: ["wa"] },
+      { hiragana: "い", answer: ["i"] },
+      { hiragana: "き", answer: ["ki"] },
+      { hiragana: "し", answer: ["shi"] },
+      { hiragana: "ち", answer: ["chi"] },
+      { hiragana: "に", answer: ["ni"] },
+      { hiragana: "ひ", answer: ["hi"] },
+      { hiragana: "み", answer: ["mi"] },
+      { hiragana: "り", answer: ["ri"] },
+      { hiragana: "う", answer: ["u"] },
+      { hiragana: "く", answer: ["ku"] },
+      { hiragana: "す", answer: ["su"] },
+      { hiragana: "つ", answer: ["tsu"] },
+      { hiragana: "ぬ", answer: ["nu"] },
+      { hiragana: "ふ", answer: ["fu"] },
+      { hiragana: "む", answer: ["mu"] },
+      { hiragana: "ゆ", answer: ["yu"] },
+      { hiragana: "る", answer: ["ru"] },
+      { hiragana: "え", answer: ["e"] },
+      { hiragana: "け", answer: ["ke"] },
+      { hiragana: "せ", answer: ["se"] },
+      { hiragana: "て", answer: ["te"] },
+      { hiragana: "ね", answer: ["ne"] },
+      { hiragana: "へ", answer: ["he"] },
+      { hiragana: "め", answer: ["me"] },
+      { hiragana: "れ", answer: ["re"] },
+      { hiragana: "お", answer: ["o"] },
+      { hiragana: "こ", answer: ["ko"] },
+      { hiragana: "そ", answer: ["so"] },
+      { hiragana: "と", answer: ["to"] },
+      { hiragana: "の", answer: ["no"] },
+      { hiragana: "ほ", answer: ["ho"] },
+      { hiragana: "も", answer: ["mo"] },
+      { hiragana: "よ", answer: ["yo"] },
+      { hiragana: "ろ", answer: ["ro"] },
+      { hiragana: "を", answer: ["o"] },
+      { hiragana: "ん", answer: ["n"] },
     ],
     currentCard: 1,
     guess: "",
@@ -21,12 +62,11 @@ class Hiragana extends Component {
   }
 
   getHiragana = () => {
-    let randomHiragana = Math.floor(Math.random() * 5);
+    let randomHiragana = Math.floor(Math.random() * 45);
     if (randomHiragana === this.state.currentCard) randomHiragana++;
-    if (randomHiragana > 5) randomHiragana -= 2;
+    if (randomHiragana > 45) randomHiragana -= 2;
     if (randomHiragana < 0) randomHiragana += 2;
     this.setState({ currentCard: randomHiragana });
-    console.log(randomHiragana, "<-- getHiragana");
   };
 
   handleChange = ({ target: { value } }) => {
@@ -47,6 +87,11 @@ class Hiragana extends Component {
 
   handleCorrect = () => {
     this.getHiragana();
+    this.setState((currentState) => {
+      return {
+        score: currentState.score++,
+      };
+    });
   };
 
   handleIncorrect = () => {
@@ -57,8 +102,8 @@ class Hiragana extends Component {
     return (
       <div>
         <h1>Hiragana Test</h1>
-        <h2>Type the correct phonetic sound and press enter.</h2>
-        <p>{this.state.currentCard}</p>
+        <h2>Type the correct phonetic sound</h2>
+        <p>{this.state.cards[this.state.currentCard]["hiragana"]}</p>
         <form onSubmit={this.checkAnswer}>
           <input
             type='text'
@@ -67,7 +112,7 @@ class Hiragana extends Component {
             value={this.state.comment}
             placeholder='Type your answer here...'></input>
           <button>Submit!</button>
-          <p>Score: {this.state.points}</p>
+          <p>Score: {this.state.score}</p>
         </form>
       </div>
     );
