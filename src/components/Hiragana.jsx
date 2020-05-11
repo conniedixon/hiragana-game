@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { Component } from "react";
+import IncorrectAnswers from "./IncorrectAnswers";
 
 class Hiragana extends Component {
   state = {
@@ -56,7 +57,9 @@ class Hiragana extends Component {
     currentCard: 1,
     guess: "",
     skippedCount: 0,
-    skipped: [],
+    incorrectCount: 0,
+    incorrect: [],
+    showIncorrectBool: false,
   };
 
   componentDidMount() {
@@ -98,7 +101,17 @@ class Hiragana extends Component {
   };
 
   handleIncorrect = () => {
-    console.log("incorrect");
+    console.log("handleIncorrect");
+    this.setState((currentState) => {
+      return {
+        incorrectCount: currentState.incorrectCount++,
+        guess: "",
+        skipped: [
+          currentState.skipped,
+          currentState.cards[currentState.currentCard],
+        ],
+      };
+    });
   };
 
   handleSkip = () => {
@@ -114,11 +127,16 @@ class Hiragana extends Component {
     this.getHiragana();
   };
 
+  showIncorrect = () => {
+    let bool;
+    this.state.showIncorrectBool ? (bool = false) : (bool = true);
+    this.setState({ showIncorrectBool: bool });
+  };
   render() {
     return (
       <div>
         <h1>Hiragana Test</h1>
-        <h2>Type the correct phonetic sound</h2>
+        <h2>Infinate Mode</h2>
         <p>{this.state.cards[this.state.currentCard]["hiragana"]}</p>
         <form onSubmit={this.checkAnswer}>
           <input
@@ -131,9 +149,12 @@ class Hiragana extends Component {
           <br />
           <button onClick={this.handleSkip}>Skip</button>
           <p>Correct: {this.state.score}</p>
-          <p>Incorrect: 0</p>
-          <p>Skipped: {this.state.skippedCount} </p>
+          <p>Incorrect: {this.state.incorrectCount}</p>
         </form>
+        <IncorrectAnswers
+          bool={this.state.showIncorrectBool}
+          incorrectAnswers={this.state.incorrect}
+        />
       </div>
     );
   }
