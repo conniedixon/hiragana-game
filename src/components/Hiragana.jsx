@@ -3,7 +3,6 @@
 import React, { Component } from "react";
 import IncorrectAnswers from "./IncorrectAnswers";
 import Form from "./Form";
-import SkippedAnswers from "./SkippedAnswers";
 
 class Hiragana extends Component {
   state = {
@@ -62,6 +61,7 @@ class Hiragana extends Component {
     skipped: [],
     incorrectCount: 0,
     incorrect: [],
+    status: "",
   };
 
   componentDidMount() {
@@ -80,6 +80,7 @@ class Hiragana extends Component {
     this.setState(() => {
       return {
         guess: value,
+        status: "",
       };
     });
   };
@@ -98,6 +99,7 @@ class Hiragana extends Component {
       return {
         score: currentState.score++,
         guess: "",
+        status: "Correct!",
       };
     });
   };
@@ -114,6 +116,7 @@ class Hiragana extends Component {
         incorrectCount: currentState.incorrectCount++,
         guess: "",
         incorrect: [...currentState.incorrect, newIncorrect],
+        status: "Incorrect",
       };
     });
   };
@@ -146,6 +149,7 @@ class Hiragana extends Component {
           score={this.state.score}
           incorrectCount={this.state.incorrectCount}
           skippedCount={this.state.skippedCount}
+          status={this.state.status}
         />
 
         <IncorrectAnswers

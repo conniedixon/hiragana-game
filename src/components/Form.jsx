@@ -13,6 +13,7 @@ const Form = (props) => {
           value={props.guess}
           placeholder='Type your answer here...'></input>
         <button>Submit!</button>
+        <p>{props.status}</p>
         <br />
       </form>
       <button onClick={props.handleSkip}>Skip</button>
