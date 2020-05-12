@@ -1,7 +1,6 @@
 /** @format */
 
 import React, { Component } from "react";
-import IncorrectAnswers from "./AnswerFeedback";
 import Form from "./Form";
 import AnswerFeedback from "./AnswerFeedback";
 
@@ -131,6 +130,7 @@ class Hiragana extends Component {
           ...currentState.skipped,
           currentState.cards[currentState.currentCard],
         ],
+        status: "",
       };
     });
     this.getHiragana();
