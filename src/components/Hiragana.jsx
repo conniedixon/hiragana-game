@@ -1,8 +1,9 @@
 /** @format */
 
 import React, { Component } from "react";
-import IncorrectAnswers from "./IncorrectAnswers";
+import IncorrectAnswers from "./AnswerFeedback";
 import Form from "./Form";
+import AnswerFeedback from "./AnswerFeedback";
 
 class Hiragana extends Component {
   state = {
@@ -152,12 +153,12 @@ class Hiragana extends Component {
           status={this.state.status}
         />
 
-        <IncorrectAnswers
+        <AnswerFeedback
           answers={this.state.incorrect}
           buttonType={"Incorrect Questions"}
           skippedBool={false}
         />
-        <IncorrectAnswers
+        <AnswerFeedback
           answers={this.state.skipped}
           buttonType={"Skipped Questions"}
           skippedBool={true}

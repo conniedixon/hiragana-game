@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import HiraganaPreview from "./HiraganaPreview";
 
-class IncorrectAnswers extends Component {
+class AnswerFeedback extends Component {
   state = {
     showAnswers: false,
   };
@@ -44,4 +44,4 @@ class IncorrectAnswers extends Component {
   }
 }
 
-export default IncorrectAnswers;
+export default AnswerFeedback;
