@@ -30,7 +30,7 @@ class IncorrectAnswers extends Component {
           <p>No incorrect answers!</p>
         ) : (
           this.props.incorrect.map((answer) => {
-            return <p>{answer.answer}</p>;
+            return <HiraganaPreview card={answer} key={answer} />;
           })
           // <p>You answered wrong</p>
           // console.log(this.props.incorrect)
