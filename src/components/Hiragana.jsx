@@ -2,6 +2,7 @@
 
 import React, { Component } from "react";
 import IncorrectAnswers from "./IncorrectAnswers";
+import Form from "./Form";
 
 class Hiragana extends Component {
   state = {
@@ -57,9 +58,9 @@ class Hiragana extends Component {
     currentCard: 1,
     guess: "",
     skippedCount: 0,
+    skipped: [],
     incorrectCount: 0,
     incorrect: [],
-    showIncorrectBool: false,
   };
 
   componentDidMount() {
@@ -102,19 +103,22 @@ class Hiragana extends Component {
 
   handleIncorrect = () => {
     console.log("handleIncorrect");
+    let newIncorrect = {
+      ...this.state.cards[this.state.currentCard],
+      guess: this.state.guess,
+    };
+    console.log(newIncorrect, "<-- new Incorrect");
     this.setState((currentState) => {
       return {
         incorrectCount: currentState.incorrectCount++,
         guess: "",
-        skipped: [
-          currentState.skipped,
-          currentState.cards[currentState.currentCard],
-        ],
+        incorrect: [...currentState.incorrect, newIncorrect],
       };
     });
   };
 
   handleSkip = () => {
+    console.log("handleSkip");
     this.setState((currentState) => {
       return {
         skippedCount: currentState.skippedCount++,
@@ -127,34 +131,23 @@ class Hiragana extends Component {
     this.getHiragana();
   };
 
-  showIncorrect = () => {
-    let bool;
-    this.state.showIncorrectBool ? (bool = false) : (bool = true);
-    this.setState({ showIncorrectBool: bool });
-  };
   render() {
     return (
       <div>
         <h1>Hiragana Test</h1>
         <h2>Infinate Mode</h2>
         <p>{this.state.cards[this.state.currentCard]["hiragana"]}</p>
-        <form onSubmit={this.checkAnswer}>
-          <input
-            type='text'
-            minLength='1'
-            onChange={this.handleChange}
-            value={this.state.guess}
-            placeholder='Type your answer here...'></input>
-          <button>Submit!</button>
-          <br />
-          <button onClick={this.handleSkip}>Skip</button>
-          <p>Correct: {this.state.score}</p>
-          <p>Incorrect: {this.state.incorrectCount}</p>
-        </form>
-        <IncorrectAnswers
-          bool={this.state.showIncorrectBool}
-          incorrectAnswers={this.state.incorrect}
+        <Form
+          handleChange={this.handleChange}
+          checkAnswer={this.checkAnswer}
+          guess={this.state.guess}
+          handleSkip={this.handleSkip}
+          score={this.state.score}
+          incorrectCount={this.state.incorrectCount}
+          skippedCount={this.state.skippedCount}
         />
+
+        <IncorrectAnswers incorrect={this.state.incorrect} />
       </div>
     );
   }
