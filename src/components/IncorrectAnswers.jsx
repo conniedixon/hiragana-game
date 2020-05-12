@@ -5,13 +5,13 @@ import HiraganaPreview from "./HiraganaPreview";
 
 class IncorrectAnswers extends Component {
   state = {
-    showIncorrect: false,
+    showAnswers: false,
   };
 
   toggleShow = () => {
     this.setState((currentState) => {
       return {
-        showIncorrect: currentState.showIncorrect === false ? true : false,
+        showAnswers: currentState.showAnswers === false ? true : false,
       };
     });
   };
@@ -20,24 +20,24 @@ class IncorrectAnswers extends Component {
     return (
       <>
         <button onClick={this.toggleShow}>
-          {this.state.showIncorrect
-            ? "Hide Incorrect Answers"
-            : "Show Incorrect Answers"}
+          {this.state.showAnswers
+            ? `Hide ${this.props.buttonType}`
+            : `Show ${this.props.buttonType}`}
         </button>
-        {!this.state.showIncorrect ? (
+        {!this.state.showAnswers ? (
           ""
-        ) : this.props.incorrect.length === 0 ? (
-          <p>No incorrect answers!</p>
+        ) : this.props.answers.length === 0 ? (
+          <p>Nothing to see here, good job!</p>
         ) : (
-          this.props.incorrect.map((answer) => {
-            return <HiraganaPreview card={answer} key={answer} />;
+          this.props.answers.map((answer) => {
+            return (
+              <HiraganaPreview
+                card={answer}
+                key={answer}
+                skipped={this.props.skippedBool}
+              />
+            );
           })
-          // <p>You answered wrong</p>
-          // console.log(this.props.incorrect)
-          // this.props.incorrect.forEach((answer) => {
-          //   console.log(answer);
-          //   return <HiraganaPreview card={answer} key={answer} />;
-          // })
         )}
       </>
     );

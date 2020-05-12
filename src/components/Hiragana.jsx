@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import IncorrectAnswers from "./IncorrectAnswers";
 import Form from "./Form";
+import SkippedAnswers from "./SkippedAnswers";
 
 class Hiragana extends Component {
   state = {
@@ -147,7 +148,16 @@ class Hiragana extends Component {
           skippedCount={this.state.skippedCount}
         />
 
-        <IncorrectAnswers incorrect={this.state.incorrect} />
+        <IncorrectAnswers
+          answers={this.state.incorrect}
+          buttonType={"Incorrect Questions"}
+          skippedBool={false}
+        />
+        <IncorrectAnswers
+          answers={this.state.skipped}
+          buttonType={"Skipped Questions"}
+          skippedBool={true}
+        />
       </div>
     );
   }
