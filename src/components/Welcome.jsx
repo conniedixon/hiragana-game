@@ -15,6 +15,15 @@ class Welcome extends Component {
         <p>
           for practicing as many hirigana as you want want with no time limits.
         </p>
+        <Link to='untimed-test'>
+          <p>Untimed Test</p>
+        </Link>
+        <p>
+          <p>
+            No time pressure, just answer where you can and recieve your
+            feedback at the end of the test.
+          </p>
+        </p>
       </>
     );
   }

@@ -1,10 +1,8 @@
 /** @format */
 
 import React, { Component } from "react";
-import Form from "./Form";
-import AnswerFeedback from "./AnswerFeedback";
 
-class Hiragana extends Component {
+class TimedTest extends Component {
   state = {
     score: 0,
     cards: [
@@ -55,25 +53,15 @@ class Hiragana extends Component {
       { hiragana: "を", answer: ["o"] },
       { hiragana: "ん", answer: ["n"] },
     ],
-    currentCard: 1,
     guess: "",
-    skippedCount: 0,
-    skipped: [],
-    incorrectCount: 0,
     incorrect: [],
-    status: "",
+    currentCard: 0,
   };
 
-  componentDidMount() {
-    this.getHiragana();
-  }
-
-  getHiragana = () => {
-    let randomHiragana = Math.floor(Math.random() * 45);
-    if (randomHiragana === this.state.currentCard) randomHiragana++;
-    if (randomHiragana > 45) randomHiragana -= 2;
-    if (randomHiragana < 0) randomHiragana += 2;
-    this.setState({ currentCard: randomHiragana });
+  getHiragana = (bool) => {
+    this.setState((currentState) => {
+      return { currentCard: currentState.currentCard++ };
+    });
   };
 
   handleChange = ({ target: { value } }) => {
@@ -94,77 +82,45 @@ class Hiragana extends Component {
   };
 
   handleCorrect = () => {
-    this.getHiragana();
     this.setState((currentState) => {
       return {
         score: currentState.score++,
+        correct: [],
         guess: "",
-        status: "Correct!",
-      };
-    });
-  };
-
-  handleIncorrect = () => {
-    console.log("handleIncorrect");
-    let newIncorrect = {
-      ...this.state.cards[this.state.currentCard],
-      guess: this.state.guess,
-    };
-    console.log(newIncorrect, "<-- new Incorrect");
-    this.setState((currentState) => {
-      return {
-        incorrectCount: currentState.incorrectCount++,
-        guess: "",
-        incorrect: [...currentState.incorrect, newIncorrect],
-        status: "Incorrect",
-      };
-    });
-  };
-
-  handleSkip = () => {
-    console.log("handleSkip");
-    this.setState((currentState) => {
-      return {
-        skippedCount: currentState.skippedCount++,
-        skipped: [
-          ...currentState.skipped,
-          currentState.cards[currentState.currentCard],
-        ],
-        status: "",
       };
     });
     this.getHiragana();
+  };
+
+  handleIncorrect = () => {
+    this.setState((currentState) => {
+      return {
+        score: currentState.score--,
+        incorrect: [],
+        guess: "",
+      };
+    });
   };
 
   render() {
     return (
       <div>
         <h1>Hiragana Test</h1>
-        <h2>Infinate Mode</h2>
+        <h2>Untimed Test Mode</h2>
+        <p>{this.state.currentCard + 1}/52</p>
         <p>{this.state.cards[this.state.currentCard]["hiragana"]}</p>
-        <Form
-          handleChange={this.handleChange}
-          checkAnswer={this.checkAnswer}
-          guess={this.state.guess}
-          handleSkip={this.handleSkip}
-          score={this.state.score}
-          incorrectCount={this.state.incorrectCount}
-          skippedCount={this.state.skippedCount}
-          status={this.state.status}
-        />
-        <AnswerFeedback
-          answers={this.state.incorrect}
-          buttonType={"Incorrect Questions"}
-          skippedBool={false}
-        />
-        <AnswerFeedback
-          answers={this.state.skipped}
-          buttonType={"Skipped Questions"}
-          skippedBool={true}
-        />
+        <form onSubmit={this.checkAnswer}>
+          <input
+            type='text'
+            minLength='1'
+            onChange={this.handleChange}
+            value={this.guess}
+            placeholder='Type your answer here...'></input>
+          <button>Submit!</button>
+        </form>
       </div>
     );
   }
 }
 
-export default Hiragana;
+export default TimedTest;
