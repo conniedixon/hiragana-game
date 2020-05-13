@@ -1,6 +1,7 @@
 /** @format */
 
 import React, { Component } from "react";
+import Results from "./Results";
 
 class TimedTest extends Component {
   state = {
@@ -56,12 +57,15 @@ class TimedTest extends Component {
     guess: "",
     incorrect: [],
     currentCard: 0,
+    showResults: false,
   };
 
-  getHiragana = (bool) => {
-    this.setState((currentState) => {
-      return { currentCard: currentState.currentCard++ };
-    });
+  getHiragana = () => {
+    if (this.state.currentCard === 46) return;
+    else
+      this.setState((currentState) => {
+        return { currentCard: currentState.currentCard++ };
+      });
   };
 
   handleChange = ({ target: { value } }) => {
@@ -85,41 +89,64 @@ class TimedTest extends Component {
     this.setState((currentState) => {
       return {
         score: currentState.score++,
-        correct: [],
+        correct: [
+          ...currentState.correct,
+          this.state.cards[this.state.currentCard],
+        ],
         guess: "",
       };
     });
+    // if (this.state.currentCard === 46) this.showResults();
     this.getHiragana();
   };
 
   handleIncorrect = () => {
+    let newIncorrect = {
+      ...this.state.cards[this.state.currentCard],
+      guess: this.state.guess,
+    };
     this.setState((currentState) => {
       return {
         score: currentState.score--,
-        incorrect: [],
+        incorrect: [...currentState.incorrect, newIncorrect],
         guess: "",
       };
     });
+    // if (this.state.currentCard === 46) this.showResults();
+    this.getHiragana();
   };
 
+  showResults = () => {
+    this.setState({ showResults: true });
+  };
   render() {
-    return (
-      <div>
-        <h1>Hiragana Test</h1>
-        <h2>Untimed Test Mode</h2>
-        <p>{this.state.currentCard + 1}/52</p>
-        <p>{this.state.cards[this.state.currentCard]["hiragana"]}</p>
-        <form onSubmit={this.checkAnswer}>
-          <input
-            type='text'
-            minLength='1'
-            onChange={this.handleChange}
-            value={this.guess}
-            placeholder='Type your answer here...'></input>
-          <button>Submit!</button>
-        </form>
-      </div>
-    );
+    if (this.state.showResults)
+      return (
+        <>
+          {console.log("here")}
+          <h1>Hiragana Test</h1>
+          <h2>Untimed Test Mode</h2>
+          <Results />
+        </>
+      );
+    else
+      return (
+        <div>
+          <h1>Hiragana Test</h1>
+          <h2>Untimed Test Mode</h2>
+          <p>{this.state.currentCard + 1}/46</p>
+          <p>{this.state.cards[this.state.currentCard]["hiragana"]}</p>
+          <form onSubmit={this.checkAnswer}>
+            <input
+              type='text'
+              minLength='1'
+              onChange={this.handleChange}
+              value={this.guess}
+              placeholder='Type your answer here...'></input>
+            <button>Submit!</button>
+          </form>
+        </div>
+      );
   }
 }
 

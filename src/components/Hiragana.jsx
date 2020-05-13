@@ -110,7 +110,6 @@ class Hiragana extends Component {
       ...this.state.cards[this.state.currentCard],
       guess: this.state.guess,
     };
-    console.log(newIncorrect, "<-- new Incorrect");
     this.setState((currentState) => {
       return {
         incorrectCount: currentState.incorrectCount++,
